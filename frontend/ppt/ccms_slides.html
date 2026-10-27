@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CCMS - DBMS Mini Project Presentation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #CBD5E1;
+    color: #0F172A;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    background: #F8FAFC;
+    margin: 24px auto;
+    padding: 48px 56px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+    page-break-after: always;
+  }
+
+  .slide.dark {
+    background: #0F172A;
+    color: #F8FAFC;
+  }
+
+  .tag {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #0D9488;
+    margin-bottom: 6px;
+  }
+
+  h1 { font-size: 46px; font-weight: 800; line-height: 1.15; letter-spacing: -1px; }
+  h2 { font-size: 34px; font-weight: 800; letter-spacing: -0.7px; color: #0F172A; }
+  .dark h2 { color: #F8FAFC; }
+  .subtitle { font-size: 16px; color: #475569; margin-top: 6px; }
+  .dark .subtitle { color: #94A3B8; }
+
+  .badge-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #CCFBF1;
+    color: #0F766E;
+    border: 1px solid #99F6E4;
+  }
+  .badge.blue { background: #DBEAFE; color: #1D4ED8; border-color: #BFDBFE; }
+  .badge.dark-pill { background: #1E293B; color: #38BDF8; border-color: #334155; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; flex: 1; margin: 20px 0; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 22px; flex: 1; margin: 20px 0; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; flex: 1; margin: 20px 0; }
+  .grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; flex: 1; margin: 20px 0; }
+
+  .card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  }
+  .dark .card {
+    background: #1E293B;
+    border-color: #334155;
+    color: #F8FAFC;
+  }
+
+  .card h3 { font-size: 19px; font-weight: 700; margin-bottom: 8px; color: #0F172A; display: flex; justify-content: space-between; align-items: center; }
+  .dark .card h3 { color: #F8FAFC; }
+  .card p, .card li { font-size: 14px; line-height: 1.55; color: #475569; }
+  .dark .card p, .dark .card li { color: #CBD5E1; }
+  .card ul { padding-left: 18px; }
+  .card li { margin-bottom: 6px; }
+
+  .banner {
+    background: #0F172A;
+    color: #F8FAFC;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 5px solid #0D9488;
+  }
+
+  pre {
+    background: #0F172A;
+    color: #E2E8F0;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    line-height: 1.45;
+    overflow-x: auto;
+    margin: 10px 0;
+  }
+
+  .pk { color: #0D9488; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .fk { color: #1D4ED8; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+
+  .screenshot-box {
+    background: #F1F5F9;
+    border: 1px dashed #94A3B8;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 220px;
+    margin: 8px 0;
+  }
+  .screenshot-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #FFFFFF;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #E2E8F0;
+    font-size: 13.5px;
+  }
+  th { background: #0F172A; color: #FFFFFF; text-align: left; padding: 12px 16px; font-weight: 700; }
+  td { padding: 12px 16px; border-bottom: 1px solid #E2E8F0; color: #334155; }
+  .pass { background: #DCFCE7; color: #15803D; padding: 4px 10px; border-radius: 999px; font-weight: 700; font-size: 12px; }
+
+  @media print {
+    body { background: none; }
+    .slide { margin: 0; box-shadow: none; page-break-after: always; }
+    @page { size: 1280px 720px; margin: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: TITLE -->
+<div class="slide dark">
+  <div class="badge-row">
+    <span class="badge dark-pill">DBMS MINI-PROJECT • EVALUATION</span>
+    <span class="badge">C++11 REST API • MySQL 8.0 • 3NF Relational Schema</span>
+  </div>
+  <div class="grid-2" style="align-items: center;">
+    <div>
+      <div class="tag">01 / OVERVIEW</div>
+      <h1>Campus Complaint Management System</h1>
+      <p style="font-size: 20px; color: #2DD4BF; font-weight: 600; margin-top: 14px;">Streamlining Institutional Grievance Redressal & Maintenance</p>
+      <p class="subtitle" style="margin-top: 14px; font-size: 15px; line-height: 1.6;">
+        One centralized full-stack relational platform for student grievance lodging, dynamic category lookups, role-based administrative resolution, and automated trigger audit logging.
+      </p>
+    </div>
+    <div class="card" style="height: auto; border-left: 4px solid #0D9488;">
+      <div class="tag">PROJECT METADATA</div>
+      <h3>Indian Institute of Information Technology, Tiruchirappalli</h3>
+      <p style="margin-bottom: 14px;">Department of Computer Science and Engineering<br>Course: <strong>24CS305 / CS3106 – DBMS Laboratory</strong></p>
+      <div style="border-top: 1px solid #334155; padding-top: 12px;">
+        <p><strong>Submitted By:</strong> AJMEERA LOKESH</p>
+        <p><strong>Class:</strong> B.Tech (CSE) 2nd Year, 3rd Semester</p>
+        <p><strong>Academic Year:</strong> 2026–2027 (Odd Semester)</p>
+      </div>
+    </div>
+  </div>
+  <div class="badge-row">
+    <span class="badge dark-pill">HTML5 / JS Fetch API</span>
+    <span class="badge dark-pill">cpp-httplib Server</span>
+    <span class="badge dark-pill">Oracle MySQL Connector/C++</span>
+    <span class="badge dark-pill">Views • Procedures • Triggers</span>
+  </div>
+</div>
+
+<!-- SLIDE 2: PROBLEM DEFINITION -->
+<div class="slide">
+  <div>
+    <div class="tag">01 / PROBLEM DEFINITION</div>
+    <h2>Fragmented Campus Grievance Workflows</h2>
+    <p class="subtitle">Current limitations of manual registers and unorganized email complaints across campus</p>
+  </div>
+  <div class="grid-4">
+    <div class="card">
+      <div>
+        <span class="badge">01 / Logging</span>
+        <h3 style="margin-top:12px;">Unstructured Records</h3>
+        <p>Complaints are scattered across physical hostel registers, WhatsApp groups, and informal emails with zero schema validation.</p>
+      </div>
+      <div style="font-weight:700; color:#DC2626; font-size:13px;">High Data Loss Risk</div>
+    </div>
+    <div class="card">
+      <div>
+        <span class="badge">02 / Visibility</span>
+        <h3 style="margin-top:12px;">Status Ambiguity</h3>
+        <p>Students have no real-time tracking mechanism to know whether a reported issue is Pending, In Progress, or Resolved.</p>
+      </div>
+      <div style="font-weight:700; color:#DC2626; font-size:13px;">Zero Transparency</div>
+    </div>
+    <div class="card">
+      <div>
+        <span class="badge">03 / Analytics</span>
+        <h3 style="margin-top:12px;">No Aggregation</h3>
+        <p>Administrators cannot execute department-wise counts (Hostel, IT, Academics) to identify recurring infrastructure failures.</p>
+      </div>
+      <div style="font-weight:700; color:#DC2626; font-size:13px;">No GROUP BY Insights</div>
+    </div>
+    <div class="card">
+      <div>
+        <span class="badge">04 / Auditing</span>
+        <h3 style="margin-top:12px;">Opaque Resolutions</h3>
+        <p>Absence of automated database triggers to record exact timestamps and administrative actions when grievances are closed.</p>
+      </div>
+      <div style="font-weight:700; color:#DC2626; font-size:13px;">Zero Audit Trail</div>
+    </div>
+  </div>
+  <div class="banner">
+    <span><strong>CCMS SOLUTION:</strong> Centralize student accounts, lookup categories, complaints, and trigger-driven audit logs into a 3NF MySQL relational database.</span>
+    <span class="badge">End-to-End Lifecycle</span>
+  </div>
+</div>
+
+<!-- SLIDE 3: TECHNICAL STACK & CONNECTIVITY -->
+<div class="slide">
+  <div>
+    <div class="tag">02 / SYSTEM ARCHITECTURE</div>
+    <h2>Frontend – C++ Backend – MySQL Connectivity</h2>
+    <p class="subtitle">3-Tier RESTful architecture connecting asynchronous browser requests to MySQL 8.0</p>
+  </div>
+  <div class="grid-3">
+    <div class="card">
+      <div>
+        <span class="badge">Presentation Tier</span>
+        <h3 style="margin-top:10px;">Client Web Application</h3>
+        <ul>
+          <li><strong>Files:</strong> <code>login.html</code>, <code>register.html</code>, <code>index.html</code>, <code>admin.html</code></li>
+          <li><strong>Styling:</strong> Responsive CSS3 cards, status badges, and dynamic filter bars.</li>
+          <li><strong>Scripting:</strong> Vanilla JS sending asynchronous JSON requests via <code>fetch()</code>.</li>
+          <li><strong>UX Security:</strong> Password visibility toggle & client input validation.</li>
+        </ul>
+      </div>
+      <div class="badge blue">Async Fetch REST API</div>
+    </div>
+    <div class="card">
+      <div>
+        <span class="badge blue">Application Tier</span>
+        <h3 style="margin-top:10px;">C++11 HTTP Server</h3>
+        <ul>
+          <li><strong>Engine:</strong> Single-header <code>httplib.h</code> running on port <code>8080</code> (<code>main.cpp</code>).</li>
+          <li><strong>DAL Class:</strong> <code>DatabaseManager.cpp</code> managing MySQL connection pooling.</li>
+          <li><strong>Endpoints:</strong> <code>/api/register</code>, <code>/api/login</code>, <code>/api/submit</code>, <code>/api/complaints</code>, <code>/api/resolve</code>.</li>
+          <li><strong>Security:</strong> Parameterized queries via <code>sql::PreparedStatement</code>.</li>
+        </ul>
+      </div>
+      <div class="badge blue">Oracle MySQL Connector/C++</div>
+    </div>
+    <div class="card">
+      <div>
+        <span class="badge">Data Tier</span>
+        <h3 style="margin-top:10px;">MySQL 8.0 Relational DB</h3>
+        <ul>
+          <li><strong>Schema:</strong> 5 normalized tables in 3NF (<code>complaint_management.sql</code>).</li>
+          <li><strong>Integrity:</strong> Primary Keys, Unique Keys, and Foreign Keys (<code>CASCADE</code> / <code>RESTRICT</code>).</li>
+          <li><strong>SQL View:</strong> <code>v_complaint_details</code> joining 3 tables.</li>
+          <li><strong>Routines:</strong> Stored Procedure <code>sp_resolve_complaint</code> & Trigger <code>trg_after_complaint_resolve</code>.</li>
+        </ul>
+      </div>
+      <div class="badge">InnoDB ACID Storage</div>
+    </div>
+  </div>
+  <div class="banner">
+    <span>Browser (JSON Request) ➔ C++ httplib Server (Port 8080) ➔ sql::PreparedStatement ➔ MySQL 8.0 Server ➔ JSON Response</span>
+  </div>
+</div>
+
+<!-- SLIDE 4: RELATIONAL SCHEMA -->
+<div class="slide">
+  <div>
+    <div class="tag">03 / RELATIONAL MODEL</div>
+    <h2>Database Entities & Relationships</h2>
+    <p class="subtitle">Normalized 5-table relational schema enforcing referential integrity</p>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>STUDENTS & ADMINS <span class="badge">Core Auth</span></h3>
+      <ul>
+        <li><span class="pk">PK student_id</span> <code>INT AUTO_INCREMENT</code></li>
+        <li><code>name VARCHAR(100) NOT NULL</code></li>
+        <li><code>email VARCHAR(150) UNIQUE NOT NULL</code></li>
+        <li><code>password_hash VARCHAR(255) NOT NULL</code>, <code>created_at TIMESTAMP</code></li>
+        <li><strong>ADMINS Table:</strong> <span class="pk">PK admin_id</span>, <code>username UNIQUE</code>, <code>password_hash</code></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>CATEGORIES <span class="badge blue">Lookup Master</span></h3>
+      <ul>
+        <li><span class="pk">PK category_id</span> <code>INT AUTO_INCREMENT</code></li>
+        <li><code>category_name VARCHAR(100) UNIQUE NOT NULL</code></li>
+        <li><strong>Pre-seeded Domain Values:</strong> <em>Hostel, Academics, Infrastructure, Administration, IT Support</em></li>
+        <li>Referenced by <code>complaints</code> with <code>ON DELETE RESTRICT</code>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>COMPLAINTS <span class="badge blue">Transactional</span></h3>
+      <ul>
+        <li><span class="pk">PK complaint_id</span> <code>INT AUTO_INCREMENT</code></li>
+        <li><span class="fk">FK student_id</span> references <code>students(student_id) ON DELETE CASCADE</code></li>
+        <li><span class="fk">FK category_id</span> references <code>categories(category_id) ON DELETE RESTRICT</code></li>
+        <li><code>description TEXT NOT NULL</code></li>
+        <li><code>status ENUM('Pending','In Progress','Resolved') DEFAULT 'Pending'</code></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>ACTION_LOGS <span class="badge">Audit Trail</span></h3>
+      <ul>
+        <li><span class="pk">PK log_id</span> <code>INT AUTO_INCREMENT</code></li>
+        <li><span class="fk">FK complaint_id</span> references <code>complaints(complaint_id) ON DELETE CASCADE</code></li>
+        <li><code>action_taken VARCHAR(255) NOT NULL</code></li>
+        <li><code>log_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP</code></li>
+        <li>Populated automatically via <code>AFTER UPDATE</code> database trigger.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="banner">
+    <span>Cardinality: Students (1 : N) Complaints &nbsp;|&nbsp; Categories (1 : N) Complaints &nbsp;|&nbsp; Complaints (1 : N) Action_Logs</span>
+    <span class="badge">3NF Verified</span>
+  </div>
+</div>
+
+<!-- SLIDE 5: NORMALIZATION -->
+<div class="slide">
+  <div>
+    <div class="tag">04 / SCHEMA NORMALIZATION</div>
+    <h2>Relational Integrity & Normal Forms (1NF – 3NF)</h2>
+    <p class="subtitle">Eliminating redundancy, insertion, update, and deletion anomalies</p>
+  </div>
+  <div class="grid-3">
+    <div class="card">
+      <div>
+        <span class="badge">First Normal Form</span>
+        <h3 style="margin-top:10px;">1NF: Atomic Values</h3>
+        <p style="margin-bottom:10px;">Every column in every table holds indivisible, scalar values with no repeating groups or arrays.</p>
+        <ul>
+          <li>Student credentials, complaint text, and category names are stored in separate atomic columns.</li>
+          <li>Each complaint is uniquely identified by <code>complaint_id</code>.</li>
+        </ul>
+      </div>
+      <div class="badge">Zero Repeating Groups</div>
+    </div>
+    <div class="card">
+      <div>
+        <span class="badge blue">Second Normal Form</span>
+        <h3 style="margin-top:10px;">2NF: Full Dependency</h3>
+        <p style="margin-bottom:10px;">Every non-prime attribute is fully functionally dependent on the entire primary key.</p>
+        <ul>
+          <li><code>complaint_id → {student_id, category_id, description, status, created_at}</code></li>
+          <li>Single-attribute surrogate primary keys guarantee zero partial dependencies.</li>
+        </ul>
+      </div>
+      <div class="badge blue">Zero Partial Dependencies</div>
+    </div>
+    <div class="card">
+      <div>
+        <span class="badge">Third Normal Form</span>
+        <h3 style="margin-top:10px;">3NF: No Transitive Keys</h3>
+        <p style="margin-bottom:10px;">No non-prime attribute depends transitively on the primary key.</p>
+        <ul>
+          <li><code>student_id → {name, email}</code> isolated in <code>students</code>.</li>
+          <li><code>category_id → category_name</code> isolated in <code>categories</code>.</li>
+          <li>Updating a category name updates 1 row instead of hundreds.</li>
+        </ul>
+      </div>
+      <div class="badge">Zero Update Anomalies</div>
+    </div>
+  </div>
+  <div class="banner">
+    <span><strong>Referential Actions:</strong> <code>ON DELETE CASCADE</code> (Student removal cleans complaints) &nbsp;•&nbsp; <code>ON DELETE RESTRICT</code> (Protects active categories)</span>
+  </div>
+</div>
+
+<!-- SLIDE 6: ADVANCED SQL OBJECTS -->
+<div class="slide">
+  <div>
+    <div class="tag">05 / ADVANCED SQL IMPLEMENTATION</div>
+    <h2>Views, Stored Procedures & Automated Triggers</h2>
+    <p class="subtitle">Database-level encapsulation of complex joins, state transitions, and audit trails</p>
+  </div>
+  <div class="grid-3">
+    <div class="card">
+      <div>
+        <span class="badge">SQL View</span>
+        <h3 style="margin-top:8px;">v_complaint_details</h3>
+        <pre>CREATE VIEW v_complaint_details AS
+SELECT c.complaint_id,
+       s.name AS student_name,
+       s.email,
+       cat.category_name,
+       c.description, c.status
+FROM complaints c
+JOIN students s 
+  ON c.student_id = s.student_id
+JOIN categories cat 
+  ON c.category_id = cat.category_id;</pre>
+        <p>Simplifies 3-table inner joins into a virtual table for the Admin Console Registry.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <span class="badge blue">Stored Procedure</span>
+        <h3 style="margin-top:8px;">sp_resolve_complaint</h3>
+        <pre>DELIMITER //
+CREATE PROCEDURE sp_resolve_complaint(
+    IN p_complaint_id INT
+)
+BEGIN
+    UPDATE complaints
+    SET status = 'Resolved'
+    WHERE complaint_id = p_complaint_id;
+END //
+DELIMITER ;
+
+-- C++ Invocation:
+CALL sp_resolve_complaint(12);</pre>
+        <p>Encapsulates complaint resolution logic behind a parameterized database routine.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <span class="badge">AFTER UPDATE Trigger</span>
+        <h3 style="margin-top:8px;">trg_after_complaint_resolve</h3>
+        <pre>DELIMITER //
+CREATE TRIGGER trg_after_complaint_resolve
+AFTER UPDATE ON complaints
+FOR EACH ROW
+BEGIN
+  IF OLD.status != 'Resolved' 
+     AND NEW.status = 'Resolved' THEN
+    INSERT INTO action_logs
+      (complaint_id, action_taken)
+    VALUES
+      (NEW.complaint_id, 'Resolved');
+  END IF;
+END //</pre>
+        <p>Automatically records an immutable audit entry whenever a complaint is resolved.</p>
+      </div>
+    </div>
+  </div>
+  <div class="banner">
+    <span><strong>Aggregate Reporting Query:</strong> <code>SELECT cat.category_name, COUNT(c.complaint_id) FROM categories cat LEFT JOIN complaints c ... GROUP BY cat.category_id;</code></span>
+  </div>
+</div>
+
+<!-- SLIDE 7: TRANSACTION FLOW -->
+<div class="slide">
+  <div>
+    <div class="tag">06 / TRANSACTION PIPELINE</div>
+    <h2>End-to-End Complaint Lifecycle</h2>
+    <p class="subtitle">Tracing Complaint #12 from student submission to administrative resolution and trigger logging</p>
+  </div>
+  <div class="grid-6">
+    <div class="card">
+      <span class="badge">STEP 01</span>
+      <h3>Client UI</h3>
+      <p>Student selects <strong>Hostel</strong> from relational dropdown &amp; submits issue.</p>
+    </div>
+    <div class="card">
+      <span class="badge blue">STEP 02</span>
+      <h3>Fetch API</h3>
+      <p>JS sends <code>POST /api/submit</code> JSON payload to C++ server on port 8080.</p>
+    </div>
+    <div class="card">
+      <span class="badge">STEP 03</span>
+      <h3>C++ DAL</h3>
+      <p><code>PreparedStatement</code> binds parameters safely against SQL injection.</p>
+    </div>
+    <div class="card">
+      <span class="badge blue">STEP 04</span>
+      <h3>MySQL Insert</h3>
+      <p>FKs verified; row <code>#12</code> committed with <code>Pending</code> status.</p>
+    </div>
+    <div class="card">
+      <span class="badge">STEP 05</span>
+      <h3>Stored Proc</h3>
+      <p>Admin clicks Resolve; executes <code>CALL sp_resolve_complaint(12)</code>.</p>
+    </div>
+    <div class="card">
+      <span class="badge blue">STEP 06</span>
+      <h3>Audit Trigger</h3>
+      <p>Trigger logs resolution in <code>action_logs</code>; badge turns <strong>Resolved</strong>.</p>
+    </div>
+  </div>
+  <div class="banner">
+    <span><strong>ACID Guarantee:</strong> Parameterized C++ PreparedStatements + MySQL InnoDB transactions prevent race conditions and SQL injection.</span>
+    <span class="badge">Atomic Execution</span>
+  </div>
+</div>
+
+<!-- SLIDE 8: SCREENSHOTS - AUTHENTICATION -->
+<div class="slide">
+  <div>
+    <div class="tag">07 / EVALUATION EVIDENCE • AUTHENTICATION</div>
+    <h2>User Provisioning & Role-Based Login Gateway</h2>
+    <p class="subtitle">Live screenshots of Student Portal Registration (register.html) and Central Login (login.html)</p>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div>
+        <span class="badge">MODULE 01 • register.html</span>
+        <h3 style="margin-top:6px;">Student Portal Registration</h3>
+        <div class="screenshot-box">
+          <img src="image_6ac009.jpg" alt="Student Registration Screenshot">
+        </div>
+        <p><strong>Database Action:</strong> Inserts student record (<code>AJMEERA LOKESH</code>, <code>ajmeeralokesh@gmail.com</code>) into <code>students</code> table while enforcing <code>UNIQUE(email)</code>.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <span class="badge blue">MODULE 02 • login.html</span>
+        <h3 style="margin-top:6px;">Institutional Login Gateway</h3>
+        <div class="screenshot-box">
+          <img src="image_6abfad.jpg" alt="Campus Login Screenshot">
+        </div>
+        <p><strong>Database Action:</strong> Authenticates credentials via parameterized <code>SELECT</code> query with password visibility toggle and routes to Student or Admin dashboard.</p>
+      </div>
+    </div>
+  </div>
+  <div class="banner">
+    <span><strong>Security Verification:</strong> Password visibility toggle implemented in JS; credentials verified via C++ <code>sql::PreparedStatement</code>.</span>
+  </div>
+</div>
+
+<!-- SLIDE 9: SCREENSHOTS - STUDENT PORTAL -->
+<div class="slide">
+  <div>
+    <div class="tag">08 / EVALUATION EVIDENCE • STUDENT PORTAL</div>
+    <h2>Relational Category Lookup & Grievance CRUD</h2>
+    <p class="subtitle">Live execution of dynamic category population, complaint creation, and status tracking (index.html)</p>
+  </div>
+  <div class="grid-3">
+    <div class="card">
+      <div>
+        <span class="badge">1. Relational Lookup</span>
+        <h3 style="margin-top:6px;">Dynamic Category Dropdown</h3>
+        <div class="screenshot-box" style="height:190px;">
+          <img src="image_6abbc8.png" alt="Category Dropdown">
+        </div>
+        <p>Populated dynamically from the <code>categories</code> table (<em>Hostel, Academics, Infrastructure, Administration, IT Support</em>).</p>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <span class="badge blue">2. CREATE Operation</span>
+        <h3 style="margin-top:6px;">Lodge a New Complaint</h3>
+        <div class="screenshot-box" style="height:190px;">
+          <img src="image_6ab8be.png" alt="Lodge Complaint Form">
+        </div>
+        <p>Student <strong>AJMEERA LOKESH</strong> selects <strong>Hostel</strong> and submits <code>"water cooler not working"</code>.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <span class="badge">3. READ &amp; DELETE</span>
+        <h3 style="margin-top:6px;">Personal Complaint History</h3>
+        <div class="screenshot-box" style="height:190px;">
+          <img src="image_6ab887.png" alt="Pending Complaint Row">
+        </div>
+        <p>Displays newly generated <strong>Complaint #12</strong> with yellow <code>Pending</code> status badge and student <code>Delete</code> action.</p>
+      </div>
+    </div>
+  </div>
+  <div class="banner">
+    <span><strong>Foreign Key Enforcement:</strong> Submitting a complaint binds <code>student_id</code> and <code>category_id</code> into the <code>complaints</code> table.</span>
+  </div>
+</div>
+
+<!-- SLIDE 10: SCREENSHOTS - ADMIN CONSOLE -->
+<div class="slide">
+  <div>
+    <div class="tag">09 / EVALUATION EVIDENCE • ADMIN CONSOLE</div>
+    <h2>Aggregate Analytics (GROUP BY) & Resolution Flow</h2>
+    <p class="subtitle">Administrator Control Console (admin.html) and real-time status synchronization</p>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div>
+        <span class="badge blue">ADMIN CONSOLE • JOIN &amp; GROUP BY + SQL VIEW</span>
+        <h3 style="margin-top:6px;">Aggregate Category Report &amp; Registry</h3>
+        <div class="screenshot-box" style="height:215px;">
+          <img src="image_6ab523.png" alt="Admin Console Screenshot">
+        </div>
+        <p><strong>Top Cards:</strong> Live SQL <code>GROUP BY</code> counts — Academics (3), Administration (1), Hostel (6), Infrastructure (1), IT Support (1).<br>
+        <strong>Bottom Table:</strong> Sourced from <code>v_complaint_details</code> with search bar &amp; one-click <strong>Resolve</strong>.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <span class="badge">STORED PROCEDURE &amp; TRIGGER RESULT</span>
+        <h3 style="margin-top:6px;">Resolved Status Verification</h3>
+        <div class="screenshot-box" style="height:215px;">
+          <img src="image_6ab49f.png" alt="Resolved Status Screenshot">
+        </div>
+        <p><strong>Lifecycle Completion:</strong> Clicking <strong>Resolve</strong> on Complaint <code>#12</code> executes <code>sp_resolve_complaint(12)</code>, fires <code>trg_after_complaint_resolve</code>, and updates the student view to green <strong>Resolved</strong>.</p>
+      </div>
+    </div>
+  </div>
+  <div class="banner">
+    <span><strong>End-to-End Verification:</strong> Complaint #12 transitions from <code>Pending</code> ➔ <code>Resolved</code> with zero page reload latency.</span>
+  </div>
+</div>
+
+<!-- SLIDE 11: TESTING MATRIX -->
+<div class="slide">
+  <div>
+    <div class="tag">10 / SYSTEM TESTING &amp; VALIDATION</div>
+    <h2>Verification Test Cases &amp; Security Hardening</h2>
+    <p class="subtitle">Empirical verification of CRUD operations, relational constraints, and SQL injection defense</p>
+  </div>
+  <div style="margin: 18px 0; flex: 1;">
+    <table>
+      <thead>
+        <tr>
+          <th>Test ID</th>
+          <th>Feature / Module</th>
+          <th>Input / Action</th>
+          <th>Expected DBMS Behavior</th>
+          <th>Observed Output</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>TC-01</strong></td>
+          <td>User Registration</td>
+          <td>Valid name, email &amp; password</td>
+          <td><code>INSERT INTO students</code> commits record</td>
+          <td>Account created; redirects to Login</td>
+          <td><span class="pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>TC-02</strong></td>
+          <td>Duplicate Email Guard</td>
+          <td>Existing student email address</td>
+          <td><code>UNIQUE(email)</code> raises MySQL Error 1062</td>
+          <td>Registration rejected cleanly</td>
+          <td><span class="pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>TC-03</strong></td>
+          <td>Relational Lookup</td>
+          <td><code>GET /api/categories</code> request</td>
+          <td>Scans <code>categories</code> master table</td>
+          <td>Populates 5 department options</td>
+          <td><span class="pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>TC-04</strong></td>
+          <td>Complaint Submission</td>
+          <td>Category <code>Hostel</code> + issue text</td>
+          <td>Verifies FKs; inserts row <code>#12</code> as <code>Pending</code></td>
+          <td>Appears in Student &amp; Admin tables</td>
+          <td><span class="pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>TC-05</strong></td>
+          <td>Status Resolution</td>
+          <td>Admin clicks <strong>Resolve</strong> on <code>#12</code></td>
+          <td><code>sp_resolve_complaint</code> + Trigger fires</td>
+          <td>Badge turns <code>Resolved</code>; audit logged</td>
+          <td><span class="pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>TC-06</strong></td>
+          <td>SQL Injection Defense</td>
+          <td><code>' OR '1'='1</code> in login field</td>
+          <td><code>PreparedStatement</code> escapes literal string</td>
+          <td>Access denied; database protected</td>
+          <td><span class="pass">PASS</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="banner">
+    <span><strong>100% Test Pass Rate:</strong> All 6 functional, referential integrity, and security test cases verified against MySQL 8.0.</span>
+  </div>
+</div>
+
+<!-- SLIDE 12: CONCLUSION & FUTURE SCOPE -->
+<div class="slide dark">
+  <div>
+    <div class="tag">11 / PROJECT SUMMARY</div>
+    <h2>Achievements, Future Scope &amp; Conclusion</h2>
+    <p class="subtitle">Production-ready relational database foundation built with C++11 and MySQL 8.0</p>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div>
+        <span class="badge">DELIVERABLES</span>
+        <h3 style="margin-top:10px;">What CCMS Delivers</h3>
+        <ul>
+          <li><strong>3NF Relational Database:</strong> 5 normalized tables with strict PK/FK constraints (<code>CASCADE</code> &amp; <code>RESTRICT</code>).</li>
+          <li><strong>Native C++11 REST Server:</strong> High-speed HTTP API using <code>httplib.h</code> and Oracle MySQL Connector/C++.</li>
+          <li><strong>Advanced SQL Objects:</strong> View (<code>v_complaint_details</code>), Stored Procedure (<code>sp_resolve_complaint</code>), and Trigger (<code>trg_after_complaint_resolve</code>).</li>
+          <li><strong>Live Admin Analytics:</strong> Real-time department-wise counters powered by SQL <code>JOIN</code> and <code>GROUP BY</code>.</li>
+        </ul>
+      </div>
+      <div class="badge">Evaluated &amp; Verified DBMS Project</div>
+    </div>
+    <div class="card">
+      <div>
+        <span class="badge blue">ROADMAP</span>
+        <h3 style="margin-top:10px;">Future Enhancements</h3>
+        <ul>
+          <li><strong>Automated SMTP Email Alerts:</strong> Instant email dispatch to students upon trigger execution.</li>
+          <li><strong>Image Attachment Support:</strong> Cloud storage links for uploading photos of damaged campus infrastructure.</li>
+          <li><strong>Departmental Admin RBAC:</strong> Routing Hostel complaints directly to Wardens and IT issues to System Admins.</li>
+          <li><strong>SLA Escalation Timers:</strong> Automated MySQL scheduled events flagging complaints pending over 48 hours.</li>
+        </ul>
+      </div>
+      <div class="badge blue">Scalable Architecture</div>
+    </div>
+  </div>
+  <div class="banner" style="background:#1E293B;">
+    <span><strong>THANK YOU!</strong> &nbsp;|&nbsp; Open for Faculty Evaluation, SQL Query Inspection &amp; Live Demonstration</span>
+    <span class="badge">GitHub: Lokesh-Ajmeera/Complaint-Management-System-DBMS</span>
+  </div>
+</div>
+
+</body>
+</html>
