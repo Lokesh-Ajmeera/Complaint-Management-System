@@ -1,0 +1,16 @@
+sudo mysql -u root -p
+
+USE complaint_management;
+
+SHOW TABLES;
+
+SELECT * FROM users;
+cd /mnt/l/OOPS_project
+lokesh29@ASUSTUF:/mnt/l/OOPS_project/backend$
+s
+
+
+cd backend
+g++ -std=c++11 main.cpp src/DatabaseManager.cpp -o server -lmysqlcppconn -lpthread
+
+./server
