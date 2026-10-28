@@ -284,6 +284,8 @@ SOURCE database/schema.sql;
 Navigate to the project root directory and compile the server using C++11:
 
 ```Bash
+
+cd backend
 g++ -std=c++11 main.cpp src/DatabaseManager.cpp -o server -lmysqlcppconn -lpthread
 ```
 ### Step 3: Launch the Server
