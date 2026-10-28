@@ -1,99 +1,117 @@
-Campus Complaint Management System
+# 🏛️ Campus Complaint Management System
 
-Course:CS3104 Mini-Project
-Team Members: Ajmeera Lokesh & Banavath Sushanth
-Year:2nd Year B.Tech CSE
+A full-stack, Object-Oriented grievance redressal platform designed for university campus environments. Built with a high-performance C++ REST API backend, relational MySQL database, and a responsive web frontend.
 
---About the Project
+**Course:** CS3104 (Object-Oriented Programming) Mini-Project  
+**Year:** 2nd Year B.Tech CSE  
+**Team Members:**  
+* Ajmeera Lokesh (`251102`)  
+* Banavath Sushanth (`251111`)  
 
-In a college campus, students face different problems such as broken hostel fans, Wi-Fi issues, mess problems, electricity issues, and problems with classrooms or laboratories.
+---
 
-Reporting these issues manually can be inconvenient, and students may not always know whether their complaints have been received or resolved.
+## 📌 Table of Contents
+- [Overview & Objectives](#-overview--objectives)
+- [System Architecture](#%EF%B8%8F-system-architecture)
+- [Object-Oriented Design & Class Hierarchy](#-object-oriented-design--class-hierarchy)
+- [OOP Principles Implemented](#-oop-principles-implemented)
+- [Key Features & Modules](#-key-features--modules)
+- [Tech Stack](#%EF%B8%8F-tech-stack)
+- [API Reference](#-api-reference)
+- [Installation & Quick Start](#-installation--quick-start)
 
-To solve this problem, we are developing a "Campus Complaint Management System".
+---
 
-The main idea of this project is to create a simple web-based system where students can submit complaints and track their progress. Administrators can use the system to view, manage, assign, and resolve complaints in one place.
+## 📖 Overview & Objectives
+Traditional paper registers for hostel and infrastructure maintenance are slow, unorganized, and lack transparency. **Campus Complaint Management System** digitizes this workflow. 
+Students can log in, file categorized grievances, and track real-time resolution statuses. Administrators receive a consolidated dashboard to triage issues, update states, and manage campus infrastructure efficiently.
 
---Technologies Used
+---
 
-We are using the following technologies:
+## ⚙️ System Architecture
 
-* HTML– for creating the web pages
-* CSS3 – for styling the website
-* JavaScript – for handling frontend functionality
-* C++ – for the backend and Object-Oriented Programming
-* MySQL*– for storing and managing data
-* MySQL Connector/C++ – for connecting the C++ backend with MySQL
-* httplib – for handling communication between the frontend and C++ backend
+The project utilizes a decoupled, three-tier architecture exchanging standardized JSON payloads between the web client, the C++ REST server, and the MySQL database.
 
---How the System Works
+📊 **[View the System Architecture Diagram in `docs/DIAGRAMS.md`](./docs/DIAGRAMS.md)**
 
-The basic flow of the system is:
+---
 
-"Student - Website - C++ Backend - MySQL Database"
+## 🧩 Object-Oriented Design & Class Hierarchy
 
-For example, when a student submits a complaint:
+The backend relies on strict OOP design. The base `User` class acts as an abstract contract, while derived classes specialize in role behaviors. 
 
-1. The student fills out the complaint form.
-2. JavaScript collects the information.
-3. The information is sent to the C++ backend.
-4. The C++ backend validates and processes the complaint.
-5. The complaint is stored in the MySQL database.
-6. The result is sent back to the website.
+📊 **[View the UML Class Diagram and Sequence Flows in `docs/DIAGRAMS.md`](./docs/DIAGRAMS.md)**
 
-This allows complaints to be stored properly and tracked whenever required.
+---
 
---Student Module
+## 💡 OOP Principles Implemented
 
-Students will be able to:
+| Principle | Implementation in Codebase |
+| :--- | :--- |
+| **Abstraction** | The `User` class is an abstract base class containing the pure virtual method `virtual std::string getRole() const = 0;`. |
+| **Inheritance** | `Student` and `Admin` concretely inherit common attributes (ID, name, email) from the `User` base class. |
+| **Polymorphism** | Dynamic dispatch is used at runtime to invoke the correct `getRole()` method depending on the authenticated entity. |
+| **Encapsulation** | Sensitive attributes (passwords, ticket states) are declared as `private` or `protected`, mutated strictly through public setters. |
+| **Generics (Templates)** | A custom `ApiResponse<T>` template class standardizes HTTP responses for varying payload types (strings, vectors, objects). |
+| **Operator Overloading** | Overloaded `operator<<` for easy serialization and console logging of response objects. |
 
-* Create an account
-* Log in to the system
-* Submit complaints
-* Select a complaint category
-* Set the priority of a complaint
-* View their previous complaints
-* Check complaint status
-* Track complaint progress
+---
 
-Some of the complaint categories include:
+## ✨ Key Features & Modules
 
-* Hostel
-* Mess
-* Internet / Wi-Fi
-* Electricity
-* Classroom
-* Laboratory
-* Other
+### 🎓 Student Portal
+* **Role-Based Auth:** Secure login utilizing standard credentials.
+* **Grievance Lodging:** Submit categorized complaints (`Hostel`, `Mess`, `Wi-Fi`, `Electricity`, `Classroom`, `Lab`).
+* **Live Tracking:** Monitor ticket transitions from `Submitted` $\rightarrow$ `Under Review` $\rightarrow$ `In Progress` $\rightarrow$ `Resolved`.
 
---Administrator Module
+### 🛡️ Administrator Dashboard
+* **Metrics Console:** View aggregate complaint counts using SQL `GROUP BY` analytics.
+* **Registry Management:** Centralized table pulling from `v_complaint_details` to view, assign, and resolve campus issues.
+* **Status Updates:** One-click transition of complaint statuses with database persistence.
 
-Administrators will have a separate dashboard for managing complaints.
+---
 
-They will be able to:
+## 🛠️ Tech Stack
+* **Frontend:** HTML5, CSS3, Vanilla JavaScript (Fetch API)
+* **Backend:** C++11
+* **HTTP Framework:** `cpp-httplib`
+* **JSON Serialization:** `nlohmann/json`
+* **Database:** MySQL 8.0+
+* **Database Driver:** MySQL Connector/C++
 
-* Log in
-* View all complaints
-* Search and filter complaints
-* View complaint details
-* Assign complaints
-* Update complaint status
-* Add remarks or resolution details
-* Mark complaints as resolved
+---
 
-A complaint can move through different stages such as:
+## 📡 API Reference
+| Method | Endpoint | Description | Payload |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/login` | Authenticate Student/Admin | `{ "email": "...", "password": "..." }` |
+| `POST` | `/api/complaints` | Submit a new grievance | `{ "student_id": 1, "category": "...", "desc": "..." }` |
+| `GET` | `/api/complaints` | Fetch complaint history | None |
+| `PUT` | `/api/complaints/:id` | Update complaint status | `{ "status": "Resolved" }` |
 
-"Submitted - Under Review - In Progress - Resolved"
+---
 
---Project Goal
+## 🚀 Installation & Quick Start
 
-Our goal is to develop a simple and practical system that makes it easier for students to report campus issues and helps administrators manage those complaints efficiently.
+### 1. Database Setup
+Ensure MySQL is running. Open your MySQL CLI or Workbench:
+```sql
+CREATE DATABASE campus_complaints;
+USE campus_complaints;
+-- Import your schema here
+SOURCE database/schema.sql;
 
-Through this project, we also aim to improve our practical understanding of:
+2. Compile the C++ Backend
+Navigate to the backend directory and compile using g++:
 
-* C++ and Object-Oriented Programming
-* MySQL and SQL
-* HTML, CSS and JavaScript
-* Frontend and backend communication
-* Database connectivity
+Bash
+g++ -std=c++11 main.cpp src/DatabaseManager.cpp -o server -lmysqlcppconn -lpthread
+3. Run the Server
+Execute the compiled binary:
 
+Bash
+./server
+(Server will start on http://localhost:8080)
+
+4. Launch the Frontend
+Open frontend/login.html in any modern web browser or use VS Code Live Server to begin interacting with the platform.
