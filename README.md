@@ -207,6 +207,42 @@ erDiagram
     }
 ```
 
+### 🗄️ Database Tables
+
+**List of Tables in Database (`complaint_management`)**
+| Table Name | Description |
+| :--- | :--- |
+| `students` | Stores registered student credentials and profiles. |
+| `admins` | Stores administrator credentials and roles. |
+| `complaints` | Main table storing all grievance tickets and resolution statuses. |
+| `categories` | Stores predefined complaint types (e.g., Hostel, Wi-Fi, Mess). |
+| `action_logs` | Audit trail for monitoring administrative actions. |
+| `v_complaint_details` | SQL View used for aggregating complaint details with user data. |
+
+**`students` Table (Data)**
+| email | student_name | password |
+| :--- | :--- | :--- |
+| `251102@iiitt.ac.in` | Ajmeera Lokesh | `StrongPass@2026!Loki@2008` |
+| `251111@iiitt.ac.in` | BANAVATH SUSHANTH | `sushanth@2007` |
+| `s1@college.com` | Amit Kumar | `pass123` |
+
+**`admins` Table (Data)**
+| admin_id | email | password |
+| :--- | :--- | :--- |
+| `1` | `admin@college.com` | `StrongPass@2026!` |
+
+**`complaints` Table (Data)**
+| id | student_email | category_id | description | status | created_at |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `1` | `s1@college.com` | `1` | Fan in room 204 is making loud noise. | Resolved | `2026-10-26 10:35:49` |
+| `6` | `251112@iiitt.ac.in` | `5` | wifi not working in room no 330 | Resolved | `2026-10-26 10:53:33` |
+| `7` | `251111@iiitt.ac.in` | `1` | wifi not working in room no : 329 | Resolved | `2026-10-26 10:56:18` |
+
+---
+
+
+
+
 ---
 
 ## 4. Detailed Explanation of OOP Pillars
