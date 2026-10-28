@@ -110,36 +110,7 @@ classDiagram
     DatabaseManager ..> ApiResponse
 ```
 
-## Architecture Diagram
 
-```mermaid
-flowchart LR
-    subgraph Frontend ["Presentation Layer"]
-        UI["Web Interface (HTML/CSS/JS)"]
-        SV["Student Dashboard"]
-        AV["Admin Dashboard"]
-        UI --> SV
-        UI --> AV
-    end
-
-    subgraph Backend ["C++ Backend"]
-        R["HTTP Router (httplib)"]
-        M["OOP Models (User, Complaint)"]
-        RES["ApiResponse"]
-        DB["DatabaseManager"]
-
-        R --> M
-        R --> RES
-        M --> DB
-    end
-
-    subgraph DB_Layer ["Database Layer"]
-        SQL[("MySQL Database")]
-    end
-
-    Frontend --> R
-    DB --> SQL
-```
 
 ## Sequence Diagram
 
@@ -173,7 +144,60 @@ sequenceDiagram
 
 The backend relies on strict OOP design. The base `User` class acts as an abstract contract, while derived classes specialize in role behaviors. 
 
-📊 **[View the UML Class Diagram and Sequence Flows in `docs/DIAGRAMS.md`](./docs/DIAGRAMS.md)**
+## Architecture Diagram
+
+```mermaid
+flowchart LR
+    subgraph Frontend ["Presentation Layer"]
+        UI["Web Interface (HTML/CSS/JS)"]
+        SV["Student Dashboard"]
+        AV["Admin Dashboard"]
+        UI --> SV
+        UI --> AV
+    end
+
+    subgraph Backend ["C++ Backend"]
+        R["HTTP Router (httplib)"]
+        M["OOP Models (User, Complaint)"]
+        RES["ApiResponse"]
+        DB["DatabaseManager"]
+
+        R --> M
+        R --> RES
+        M --> DB
+    end
+
+    subgraph DB_Layer ["Database Layer"]
+        SQL[("MySQL Database")]
+    end
+
+    Frontend --> R
+    DB --> SQL
+```
+## Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor S as Student
+    participant FE as Web Interface
+    participant BE as C++ Server
+    participant DB as DatabaseManager
+    actor A as Admin
+
+    S->>FE: Fill & submit complaint form
+    FE->>BE: POST /api/complaints
+    BE->>DB: createComplaint(complaintObj)
+    DB-->>BE: Status true
+    BE-->>FE: ApiResponse (HTTP 200)
+
+    A->>FE: Open admin dashboard
+    FE->>BE: GET /api/complaints
+    BE->>DB: getAllComplaints()
+    DB-->>BE: Return complaints list
+    BE-->>FE: Render complaints table
+```
+
 
 ---
 
